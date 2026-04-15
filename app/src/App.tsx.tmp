@@ -1,0 +1,1085 @@
+import { useEffect, useRef, useState } from 'react';
+import './App.css';
+import { 
+  BookOpen, 
+  Mail, 
+  MapPin, 
+  Star, 
+  ArrowRight, 
+  Menu, 
+  X,
+  Instagram,
+  Twitter,
+  ExternalLink,
+  Send,
+  ChevronUp,
+  Quote,
+  User,
+  ShoppingCart,
+  Heart
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+// Navigation Component
+function Navigation() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'Books', href: '#books' },
+    { name: 'Reviews', href: '#reviews' },
+    { name: 'About', href: '#about' },
+    { name: 'Articles', href: '#articles' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
+  return (
+    <nav 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-white/95 backdrop-blur-md shadow-soft py-3' 
+          : 'bg-transparent py-5'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <a href="#home" className="font-display font-semibold text-xl text-brand-primary tracking-tight">
+            Mothilal Shankar
+          </a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="relative font-body text-sm text-brand-text hover:text-brand-accent transition-colors duration-250 group"
+              >
+                {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-accent transition-all duration-300 group-hover:w-full" />
+              </a>
+            ))}
+          </div>
+
+          {/* CTA Button */}
+          <div className="hidden md:block">
+            <Button 
+              className="bg-brand-primary text-white hover:bg-brand-accent transition-all duration-300 hover:-translate-y-0.5"
+              asChild
+            >
+              <a href="#books">Get My Books</a>
+            </Button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 text-brand-primary"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t border-brand-border animate-fade-in-up">
+            <div className="flex flex-col gap-4 pt-4">
+              {navLinks.map((link, index) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="font-body text-brand-text hover:text-brand-accent transition-colors"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </a>
+              ))}
+              <Button 
+                className="bg-brand-primary text-white hover:bg-brand-accent mt-2"
+                asChild
+              >
+                <a href="#books" onClick={() => setIsMobileMenuOpen(false)}>Get My Books</a>
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+}
+
+// Hero Section
+function HeroSection() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  return (
+    <section id="home" className="relative min-h-screen flex items-center bg-brand-secondary overflow-hidden">
+      {/* Floating accent shapes */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-10 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-brand-accent/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/3 w-48 h-48 bg-brand-accent/8 rounded-full blur-2xl animate-float" style={{ animationDelay: '4s' }} />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 pt-32 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Content */}
+          <div className={`space-y-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            {/* Eyebrow */}
+            <div 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-brand-border"
+              style={{ transitionDelay: '200ms' }}
+            >
+              <MapPin size={16} className="text-brand-accent" />
+              <span className="text-sm font-body text-brand-text-light">Independent Author from India, Now in France</span>
+            </div>
+
+            {/* Headline */}
+            <h1 className="font-display text-display-1 text-brand-primary">
+              <span className="block overflow-hidden">
+                <span className={`block transition-all duration-700 ${isVisible ? 'translate-y-0' : 'translate-y-full'}`} style={{ transitionDelay: '300ms' }}>
+                  Giving Voice to
+                </span>
+              </span>
+              <span className="block overflow-hidden">
+                <span className={`block transition-all duration-700 ${isVisible ? 'translate-y-0' : 'translate-y-full'}`} style={{ transitionDelay: '400ms' }}>
+                  <span className="text-brand-accent">Silent</span> Struggles
+                </span>
+              </span>
+            </h1>
+
+            {/* Subheadline */}
+            <p 
+              className={`font-body text-lg text-brand-text-light max-w-lg leading-relaxed transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+              style={{ transitionDelay: '500ms' }}
+            >
+              I write books for young people going through difficult phases — breakups, sadness, loneliness, and emotional darkness. My words are a companion when life feels heavy.
+            </p>
+
+            {/* CTAs */}
+            <div 
+              className={`flex flex-wrap gap-4 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+              style={{ transitionDelay: '600ms' }}
+            >
+              <Button 
+                size="lg" 
+                className="bg-brand-primary text-white hover:bg-brand-accent transition-all duration-300 hover:-translate-y-1 hover:shadow-accent"
+                asChild
+              >
+                <a href="#books">Explore My Books</a>
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all duration-300"
+                asChild
+              >
+                <a href="#about">Know My Story</a>
+              </Button>
+            </div>
+
+            {/* Stats */}
+            <div 
+              className={`flex flex-wrap gap-8 pt-4 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+              style={{ transitionDelay: '700ms' }}
+            >
+              <div className="flex items-center gap-2">
+                <BookOpen size={20} className="text-brand-accent" />
+                <span className="font-display font-semibold text-brand-primary">3 Books</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Star size={20} className="text-brand-accent" />
+                <span className="font-display font-semibold text-brand-primary">5.0★ Rating</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Heart size={20} className="text-brand-accent" />
+                <span className="font-display font-semibold text-brand-primary">1000+ Readers</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Image */}
+          <div 
+            className={`relative transition-all duration-1200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}
+            style={{ transitionDelay: '400ms' }}
+          >
+            <div className="relative">
+              {/* Image container with clip-path animation */}
+              <div className="relative overflow-hidden rounded-2xl shadow-float animate-breathe">
+                <img 
+                  src="/images/hero-author.jpg" 
+                  alt="Mothilal Shankar" 
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-brand-accent/20 rounded-full blur-2xl" />
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-brand-accent/15 rounded-full blur-xl" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Books Section
+function BooksSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const books = [
+    {
+      id: 1,
+      title: "23 and Broken",
+      subtitle: "A raw exploration of the emotional battles faced by young adults at 23",
+      description: "At an age where society demands clarity and achievement, this book brings light to the struggles many feel but rarely speak about: the crushing weight of unrealistic expectations, the loneliness of isolation, and the overwhelming pressure of comparison.",
+      image: "/images/book-23-broken.jpg",
+      rating: "5.0",
+      reviews: 4,
+      date: "July 2025",
+      featured: true,
+      amazonLink: "https://www.amazon.in/23-Broken-Mothilal-Shankar-ebook/dp/B0FJGB2DGM",
+      kindleLink: "https://www.amazon.in/23-Broken-Mothilal-Shankar-ebook/dp/B0FJGB2DGM",
+      paperbackLink: "#"
+    },
+    {
+      id: 2,
+      title: "Mistakes",
+      subtitle: "The Wrong Turns That Shape the Right Path",
+      description: "Raw, relatable stories about the years when life feels uncertain. Every wrong step can still lead to the right destination.",
+      image: "/images/book-mistakes.jpg",
+      rating: "5.0",
+      reviews: 2,
+      date: "August 2025",
+      featured: false,
+      amazonLink: "https://www.amazon.in/Mothilal-Shankar/e/B0FLWD73CG",
+      kindleLink: "https://www.amazon.in/Mothilal-Shankar/e/B0FLWD73CG",
+      paperbackLink: "#"
+    },
+    {
+      id: 3,
+      title: "Being Alone Could Be a Gift",
+      subtitle: "A Story of Self-Discovery in France",
+      description: "A heartfelt story of a young man rebuilding himself in France. From silence and lonely mornings, he discovers strength, hope, and the courage to grow.",
+      image: "/images/book-alone-gift.jpg",
+      rating: "5.0",
+      reviews: 3,
+      date: "September 2025",
+      featured: false,
+      amazonLink: "https://www.amazon.in/Being-alone-could-be-gift-ebook/dp/B0G2DYGY2J",
+      kindleLink: "https://www.amazon.in/Being-alone-could-be-gift-ebook/dp/B0G2DYGY2J",
+      paperbackLink: "#"
+    }
+  ];
+
+  const featuredBook = books.find(b => b.featured);
+  const otherBooks = books.filter(b => !b.featured);
+
+  return (
+    <section id="books" ref={sectionRef} className="py-24 bg-brand-secondary">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className={`text-center max-w-2xl mx-auto mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <span className="inline-block px-4 py-1.5 bg-brand-accent/10 text-brand-accent-dark text-sm font-medium rounded-full mb-4">
+            My Books
+          </span>
+          <h2 className="font-display text-display-2 text-brand-primary mb-4">
+            Stories That Heal
+          </h2>
+          <p className="font-body text-brand-text-light text-lg">
+            Raw, unfiltered narratives about the struggles we rarely speak about — but all feel.
+          </p>
+        </div>
+
+        {/* Featured Book */}
+        {featuredBook && (
+          <div 
+            className={`bg-white rounded-2xl shadow-lift overflow-hidden mb-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            style={{ transitionDelay: '200ms' }}
+          >
+            <div className="grid md:grid-cols-2 gap-8 p-8 lg:p-12">
+              {/* Book Cover */}
+              <div className="relative group">
+                <div className="relative overflow-hidden rounded-xl shadow-lift transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-float">
+                  <img 
+                    src={featuredBook.image} 
+                    alt={featuredBook.title}
+                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              </div>
+
+              {/* Book Info */}
+              <div className="flex flex-col justify-center space-y-6">
+                <div>
+                  <h3 className="font-display text-display-3 text-brand-primary mb-2">
+                    {featuredBook.title}
+                  </h3>
+                  <p className="font-body text-brand-accent font-medium">
+                    {featuredBook.subtitle}
+                  </p>
+                </div>
+
+                <p className="font-body text-brand-text-light leading-relaxed">
+                  {featuredBook.description}
+                </p>
+
+                <div className="flex flex-wrap items-center gap-6">
+                  <div className="flex items-center gap-1">
+                    <Star size={18} className="text-yellow-500 fill-yellow-500" />
+                    <span className="font-display font-semibold text-brand-primary">{featuredBook.rating}</span>
+                    <span className="text-brand-text-light text-sm">({featuredBook.reviews} reviews)</span>
+                  </div>
+                  <div className="text-brand-text-light text-sm">
+                    Published {featuredBook.date}
+                  </div>
+                </div>
+
+                {/* Buy Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <Button 
+                    size="lg" 
+                    className="bg-brand-primary text-white hover:bg-brand-accent transition-all duration-300 hover:-translate-y-1 w-fit"
+                    asChild
+                  >
+                    <a href={featuredBook.amazonLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                      <ShoppingCart size={18} /> Buy on Amazon
+                    </a>
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all duration-300"
+                    asChild
+                  >
+                    <a href={featuredBook.kindleLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                      <BookOpen size={18} /> Kindle Edition
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Other Books */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {otherBooks.map((book, index) => (
+            <div 
+              key={book.id}
+              className={`bg-white rounded-2xl shadow-lift overflow-hidden group transition-all duration-700 hover:-translate-y-2 hover:shadow-float ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: `${400 + index * 200}ms` }}
+            >
+              <div className="grid sm:grid-cols-2 gap-6 p-6">
+                {/* Book Cover */}
+                <div className="relative overflow-hidden rounded-xl">
+                  <img 
+                    src={book.image} 
+                    alt={book.title}
+                    className="w-full h-48 sm:h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Book Info */}
+                <div className="flex flex-col justify-center space-y-4">
+                  <div>
+                    <h4 className="font-display text-display-4 text-brand-primary mb-1">
+                      {book.title}
+                    </h4>
+                    <p className="font-body text-sm text-brand-accent">
+                      {book.subtitle}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Star size={14} className="text-yellow-500 fill-yellow-500" />
+                    <span className="text-sm font-medium text-brand-primary">{book.rating}</span>
+                    <span className="text-brand-text-light text-xs">({book.reviews} reviews)</span>
+                  </div>
+
+                  <p className="font-body text-brand-text-light text-sm leading-relaxed line-clamp-3">
+                    {book.description}
+                  </p>
+
+                  {/* Buy Buttons */}
+                  <div className="flex flex-wrap gap-2">
+                    <Button 
+                      size="sm"
+                      className="bg-brand-primary text-white hover:bg-brand-accent transition-all duration-300"
+                      asChild
+                    >
+                      <a href={book.amazonLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+                        <ShoppingCart size={14} /> Buy
+                      </a>
+                    </Button>
+                    <Button 
+                      size="sm"
+                      variant="outline"
+                      className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all duration-300"
+                      asChild
+                    >
+                      <a href={book.kindleLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+                        <ExternalLink size={14} /> Kindle
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Reviews Section - Real Amazon Reviews
+function ReviewsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const reviews = [
+    {
+      id: 1,
+      name: "vishnu kumar",
+      location: "India",
+      rating: 5,
+      book: "23 and Broken",
+      title: "Emotional & Relatable",
+      text: "Just finished 23 and Broken by Mothilal Shankar — raw, honest, and incredibly relatable. It felt like a friend who truly understands your silent struggles in your 20s. A must-read if you've ever felt lost or broken. Thank you @mothilal_shankar for this gem.",
+      date: "24 July 2025",
+      verified: true
+    },
+    {
+      id: 2,
+      name: "salla goutham",
+      location: "India",
+      rating: 5,
+      book: "23 and Broken",
+      title: "At 23, life feels like it's supposed to begin, but instead, it often breaks you down.",
+      text: "23 and Broken is not just a story, it's a raw, honest reflection of what many silently go through at that confusing age where dreams clash with reality. At 23, life feels like it's supposed to begin, but instead, it often breaks you down. This story captures that turbulence with incredible emotion — the pressure to succeed, heartbreaks, self-doubt, loneliness, career confusion, and the silent battles no one sees. Every page speaks to the soul of a generation that's expected to have it all figured out but is still learning to stand. The storytelling is brave and authentic, making you feel seen, understood and less alone. Whether you are 23, past it, or approaching it, this story hits home.",
+      date: "25 July 2025",
+      verified: true
+    }
+  ];
+
+  return (
+    <section id="reviews" ref={sectionRef} className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className={`text-center max-w-2xl mx-auto mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <span className="inline-block px-4 py-1.5 bg-brand-accent/10 text-brand-accent-dark text-sm font-medium rounded-full mb-4">
+            <Star size={14} className="inline mr-1" /> 5.0 Rating
+          </span>
+          <h2 className="font-display text-display-2 text-brand-primary mb-4">
+            What Readers Are Saying
+          </h2>
+          <p className="font-body text-brand-text-light text-lg">
+            Real reviews from Amazon readers who found comfort in these words.
+          </p>
+        </div>
+
+        {/* Reviews Grid */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {reviews.map((review, index) => (
+            <div 
+              key={review.id}
+              className={`bg-brand-secondary rounded-2xl p-8 transition-all duration-700 hover:-translate-y-1 hover:shadow-lift ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: `${200 + index * 150}ms` }}
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-brand-primary rounded-full flex items-center justify-center">
+                    <User size={20} className="text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-display font-semibold text-brand-primary">{review.name}</h4>
+                    <p className="font-body text-sm text-brand-text-light">{review.location}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 bg-white px-3 py-1 rounded-full">
+                  <Star size={14} className="text-yellow-500 fill-yellow-500" />
+                  <span className="text-sm font-medium text-brand-primary">{review.rating}.0</span>
+                </div>
+              </div>
+
+              {/* Review Title */}
+              <h5 className="font-display font-semibold text-brand-primary mb-2">{review.title}</h5>
+
+              {/* Book Tag */}
+              <div className="mb-4">
+                <span className="inline-block px-3 py-1 bg-brand-accent/10 text-brand-accent-dark text-xs font-medium rounded-full">
+                  Review for: {review.book}
+                </span>
+              </div>
+
+              {/* Review Text */}
+              <div className="relative mb-4">
+                <Quote size={24} className="absolute -top-2 -left-2 text-brand-accent/20" />
+                <p className="font-body text-brand-text leading-relaxed pl-6">
+                  {review.text}
+                </p>
+              </div>
+
+              {/* Date & Verified */}
+              <div className="flex items-center justify-between">
+                <p className="font-body text-sm text-brand-text-light">{review.date}</p>
+                {review.verified && (
+                  <span className="text-xs text-green-600 font-medium">✓ Verified Purchase</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Write a Review CTA */}
+        <div className={`text-center mt-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '600ms' }}>
+          <p className="font-body text-brand-text-light mb-4">
+            Have you read one of my books? I'd love to hear your thoughts!
+          </p>
+          <Button 
+            variant="outline" 
+            className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all duration-300"
+            asChild
+          >
+            <a href="mailto:hello@mothilalshankar.com?subject=Book Review" className="flex items-center gap-2">
+              Share Your Review
+            </a>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Quote Section
+function QuoteSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="py-24 bg-brand-primary relative overflow-hidden">
+      {/* Decorative quote marks */}
+      <div className={`absolute top-8 left-8 text-brand-accent/10 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
+        <Quote size={120} />
+      </div>
+      <div className={`absolute bottom-8 right-8 text-brand-accent/10 rotate-180 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} style={{ transitionDelay: '200ms' }}>
+        <Quote size={120} />
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <blockquote className="font-display text-2xl md:text-3xl lg:text-4xl text-white leading-relaxed mb-8">
+            "For anyone who's ever felt like they're struggling to keep it together while the world moves on without them. For anyone who needs the courage to stop pretending and start healing."
+          </blockquote>
+          <cite className="font-body text-brand-accent not-italic text-lg">
+            — From '23 and Broken'
+          </cite>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// About Section
+function AboutSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const stats = [
+    { label: 'Books', value: '3' },
+    { label: 'Readers', value: '1000+' },
+    { label: 'Location', value: 'France' },
+  ];
+
+  return (
+    <section id="about" ref={sectionRef} className="py-24 bg-brand-secondary">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Image */}
+          <div 
+            className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
+          >
+            <div className="relative">
+              <div className="relative overflow-hidden rounded-2xl shadow-float transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                <img 
+                  src="/images/about-author.jpg" 
+                  alt="Mothilal Shankar" 
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-brand-accent/30 rounded-2xl -z-10" />
+              <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-brand-accent/10 rounded-full blur-2xl" />
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className={`space-y-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`} style={{ transitionDelay: '200ms' }}>
+            <span className="inline-block px-4 py-1.5 bg-brand-accent/10 text-brand-accent-dark text-sm font-medium rounded-full">
+              About Me
+            </span>
+            
+            <h2 className="font-display text-display-2 text-brand-primary">
+              The Voice Behind the Words
+            </h2>
+            
+            <div className="space-y-4 font-body text-brand-text-light leading-relaxed">
+              <p>
+                My name is Mothilal Shankar. I am an independent author from India, currently living in France. I write books for young people who are going through difficult phases of life — breakups, sadness, loneliness, and emotional darkness.
+              </p>
+              <p>
+                My writing comes from real emotions and lived experiences. I understand what it feels like to feel lost, unheard, or broken inside. Through my books, I aim to reach those who are silently struggling and help them find clarity, strength, and hope during their darkest moments.
+              </p>
+              <p>
+                I believe that healing begins when someone feels understood. My books are written in a simple, honest, and direct style so readers can connect deeply with the words and feel less alone. Each book is meant to be a companion — something to hold onto when life feels heavy.
+              </p>
+              <p className="text-brand-primary font-medium">
+                As an author, my purpose is not just to write, but to support, guide, and inspire young minds to move forward, rebuild themselves, and believe in their own worth again.
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="flex flex-wrap gap-8 pt-4">
+              {stats.map((stat, index) => (
+                <div 
+                  key={stat.label}
+                  className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                  style={{ transitionDelay: `${400 + index * 100}ms` }}
+                >
+                  <div className="font-display text-3xl font-bold text-brand-primary">{stat.value}</div>
+                  <div className="font-body text-sm text-brand-text-light">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Social Links */}
+            <div className="flex gap-4 pt-4">
+              <a 
+                href="#" 
+                className="p-3 bg-white rounded-full text-brand-primary hover:bg-brand-accent hover:text-white transition-all duration-300 hover:-translate-y-1"
+                aria-label="Instagram"
+              >
+                <Instagram size={20} />
+              </a>
+              <a 
+                href="#" 
+                className="p-3 bg-white rounded-full text-brand-primary hover:bg-brand-accent hover:text-white transition-all duration-300 hover:-translate-y-1"
+                aria-label="Twitter"
+              >
+                <Twitter size={20} />
+              </a>
+              <a 
+                href="https://www.amazon.in/Mothilal-Shankar/e/B0FLWD73CG" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-white rounded-full text-brand-primary hover:bg-brand-accent hover:text-white transition-all duration-300 hover:-translate-y-1"
+                aria-label="Amazon"
+              >
+                <ExternalLink size={20} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Articles Section
+function ArticlesSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const articles = [
+    {
+      id: 1,
+      title: "The Silence of Being 23",
+      excerpt: "On the unspoken pressure of your early twenties and why it's okay to not have it all figured out.",
+      date: "January 2025",
+      readTime: "5 min read",
+      category: "Reflection"
+    },
+    {
+      id: 2,
+      title: "Why I Write in Tanglish",
+      excerpt: "The power of speaking your truth in the language that feels most authentic to you.",
+      date: "December 2024",
+      readTime: "4 min read",
+      category: "Writing"
+    },
+    {
+      id: 3,
+      title: "Finding Home in a Foreign Land",
+      excerpt: "Lessons from France about solitude, self-discovery, and the courage to start over.",
+      date: "November 2024",
+      readTime: "6 min read",
+      category: "Travel"
+    }
+  ];
+
+  return (
+    <section id="articles" ref={sectionRef} className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className={`text-center max-w-2xl mx-auto mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <span className="inline-block px-4 py-1.5 bg-brand-accent/10 text-brand-accent-dark text-sm font-medium rounded-full mb-4">
+            My Articles
+          </span>
+          <h2 className="font-display text-display-2 text-brand-primary mb-4">
+            Thoughts & Reflections
+          </h2>
+          <p className="font-body text-brand-text-light text-lg">
+            Short pieces on life, struggles, and finding hope in unexpected places.
+          </p>
+        </div>
+
+        {/* Articles Grid */}
+        <div className="grid md:grid-cols-3 gap-8">
+          {articles.map((article, index) => (
+            <article 
+              key={article.id}
+              className={`bg-brand-secondary rounded-2xl shadow-lift overflow-hidden group cursor-pointer transition-all duration-700 hover:-translate-y-2 hover:shadow-float ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: `${200 + index * 150}ms` }}
+            >
+              <div className="p-8">
+                {/* Meta */}
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="px-3 py-1 bg-brand-accent/10 text-brand-accent-dark text-xs font-medium rounded-full">
+                    {article.category}
+                  </span>
+                  <span className="text-brand-text-light text-sm">{article.date}</span>
+                </div>
+
+                {/* Content */}
+                <h3 className="font-display text-xl text-brand-primary mb-3 group-hover:text-brand-accent transition-colors duration-300">
+                  {article.title}
+                </h3>
+                <p className="font-body text-brand-text-light text-sm leading-relaxed mb-6">
+                  {article.excerpt}
+                </p>
+
+                {/* Footer */}
+                <div className="flex items-center justify-between">
+                  <span className="text-brand-text-light text-sm">{article.readTime}</span>
+                  <span className="flex items-center gap-1 text-brand-primary font-medium text-sm group-hover:text-brand-accent transition-colors duration-300">
+                    Read More <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Newsletter Section
+function NewsletterSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setIsSubmitted(true);
+      setEmail('');
+    }
+  };
+
+  return (
+    <section id="contact" ref={sectionRef} className="py-24 bg-brand-secondary relative overflow-hidden">
+      {/* Floating accents */}
+      <div className="absolute top-10 right-10 w-64 h-64 bg-brand-accent/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-10 left-10 w-48 h-48 bg-brand-accent/8 rounded-full blur-2xl" />
+
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className={`text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <h2 className="font-display text-display-2 text-brand-primary mb-4">
+            Join the Journey
+          </h2>
+          <p className="font-body text-brand-text-light text-lg mb-8">
+            Get weekly reflections on life, writing, and finding hope. No spam, just honest words.
+          </p>
+
+          {!isSubmitted ? (
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 h-12 px-4 border-brand-border focus:border-brand-accent focus:ring-brand-accent/20 bg-white"
+                required
+              />
+              <Button 
+                type="submit"
+                className="h-12 px-6 bg-brand-primary text-white hover:bg-brand-accent transition-all duration-300 hover:-translate-y-0.5"
+              >
+                <Send size={18} className="mr-2" /> Subscribe
+              </Button>
+            </form>
+          ) : (
+            <div className="bg-white rounded-xl p-8 animate-scale-in">
+              <div className="w-16 h-16 bg-brand-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Send size={32} className="text-brand-accent" />
+              </div>
+              <h3 className="font-display text-xl text-brand-primary mb-2">Thank You!</h3>
+              <p className="font-body text-brand-text-light">You've been added to the list. Watch your inbox for reflections.</p>
+            </div>
+          )}
+
+          <p className="font-body text-brand-text-light text-sm mt-6">
+            I respect your privacy. Unsubscribe anytime.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Footer
+function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <footer className="bg-brand-primary text-white py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-4 gap-12 mb-12">
+          {/* Brand */}
+          <div className="md:col-span-1">
+            <h3 className="font-display font-semibold text-xl mb-4">Mothilal Shankar</h3>
+            <p className="font-body text-white/70 text-sm leading-relaxed">
+              Giving voice to silent struggles through raw emotional storytelling.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-display font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-2">
+              {['Home', 'Books', 'Reviews', 'About', 'Articles'].map((link) => (
+                <li key={link}>
+                  <a 
+                    href={`#${link.toLowerCase()}`} 
+                    className="font-body text-white/70 hover:text-brand-accent transition-colors duration-200 text-sm"
+                  >
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Connect */}
+          <div>
+            <h4 className="font-display font-semibold mb-4">Connect</h4>
+            <div className="flex gap-3">
+              <a 
+                href="#" 
+                className="p-2 bg-white/10 rounded-full hover:bg-brand-accent transition-colors duration-300"
+                aria-label="Instagram"
+              >
+                <Instagram size={18} />
+              </a>
+              <a 
+                href="#" 
+                className="p-2 bg-white/10 rounded-full hover:bg-brand-accent transition-colors duration-300"
+                aria-label="Twitter"
+              >
+                <Twitter size={18} />
+              </a>
+              <a 
+                href="https://www.amazon.in/Mothilal-Shankar/e/B0FLWD73CG"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white/10 rounded-full hover:bg-brand-accent transition-colors duration-300"
+                aria-label="Amazon"
+              >
+                <ExternalLink size={18} />
+              </a>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="font-display font-semibold mb-4">Contact</h4>
+            <a 
+              href="mailto:hello@mothilalshankar.com" 
+              className="flex items-center gap-2 font-body text-white/70 hover:text-brand-accent transition-colors duration-200 text-sm"
+            >
+              <Mail size={16} /> hello@mothilalshankar.com
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="font-body text-white/50 text-sm">
+            © {new Date().getFullYear()} Mothilal Shankar. All rights reserved.
+          </p>
+          <button
+            onClick={scrollToTop}
+            className="flex items-center gap-2 font-body text-white/70 hover:text-brand-accent transition-colors duration-200 text-sm group"
+          >
+            Back to top <ChevronUp size={16} className="transition-transform duration-300 group-hover:-translate-y-1" />
+          </button>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// Main App
+function App() {
+  return (
+    <div className="min-h-screen bg-white">
+      <Navigation />
+      <main>
+        <HeroSection />
+        <BooksSection />
+        <ReviewsSection />
+        <QuoteSection />
+        <AboutSection />
+        <ArticlesSection />
+        <NewsletterSection />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+export default App;
